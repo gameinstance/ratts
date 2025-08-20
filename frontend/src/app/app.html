@@ -1,0 +1,21 @@
+<header class="navbar">
+	<div class="logo">
+		<a routerLink="/">
+			<img src="assets/img/ratts_icon.webp" alt="RATTS">
+		</a>
+	</div>
+	<div class="menu-container"> <!--(mouseenter)="showMenu()" (mouseleave)="hideMenu()"-->
+			<div class="menu-icon" (click)="toggleMenu()">
+					&#9776; <!-- Hamburger icon -->
+			</div>
+			<ul class="menu-list" *ngIf="isMenuVisible">
+					<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a></li>
+					<li><a routerLink="/about" routerLinkActive="active">About</a></li>
+					<li><a routerLink="/user" routerLinkActive="active">Account</a></li>
+			</ul>
+	</div>
+</header>
+
+<div class="container">
+	<router-outlet></router-outlet>
+</div>

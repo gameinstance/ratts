@@ -1,0 +1,88 @@
+<div class="main-content">
+	<h2>Description</h2>
+
+	<p>
+		RATTS implements a stateless-first REST architecture: all regular
+		requests are handled without server-side session storage. The backend
+		handles API requests from <code>/api</code> and serves files located in
+		./static from the webserver root. The frontend is made with
+		<a href="https://angular.io/"><code>Angular</code></a> and a responsive
+		CSS, but can support any other
+		<a href="https://www.typescriptlang.org/"><code>TypeScript</code></a>
+		framework as long as it complies with the API protocol types exported
+		with <strong>ts-rs</strong> by the backend build process.
+	</p>
+	<p>
+		The repo comes with a multi-stage <code>Dockerfile</code> that builds
+		the backend, the frontend and then packs the deployment image. The
+		<code>docker compose</code> setup will build, if needed, and run the web
+		application image. It fetches, initiates and runs the official
+		<strong>PostgreSQL</strong> Docker image with storage volume. For
+		testing purposes, a demo SMTP <strong>mailcatcher</strong> is launched
+		to capture and display the emails sent by the webserver.
+	</p>
+
+	<h2>Features</h2>
+
+	<ul>
+		<li>
+			<strong>Authentication</strong>
+			<ul>
+				<li>JWT-based login</li>
+				<li>Argon2id password hashing</li>
+				<li>Short-lived access tokens</li>
+			</ul>
+		</li>
+		<li>
+			<strong>Registration flow</strong>
+			<ul>
+				<li>Email verification with short TTL token</li>
+				<li>Deferred persistence user registration</li>
+			</ul>
+		</li>
+		<li>
+			<strong>Security</strong>
+			<ul>
+				<li>Angular route guards for protected pages</li>
+				<li>Minimal and generic responses on failures</li>
+			</ul>
+		</li>
+		<li>
+			<strong>User area</strong>
+			<ul>
+				<li>Public pages (home, about, login, register)</li>
+				<li>Private dashboard (accessible only after login)</li>
+			</ul>
+		</li>
+		<li>
+			<strong>DevOps ready</strong>
+			<ul>
+				<li>Docker compose for build and deployment</li>
+			</ul>
+		</li>
+	</ul>
+
+	<h2>Reuse</h2>
+
+	<p>
+		To start your new application from RATTS, you must first change the
+		credentials in <code>.env</code> and configure an actual SMTP server.
+		Being an <a href="https://mit-license.org/">MIT-licensed</a> work,
+		you have the liberty to rebrand it
+	</p>
+
+<pre>
+<code>
+cd ratts
+sed -i 's/ratts/your_awesome_project/g' *
+sed -i 's/RATTS/YourAwesomeProject/g' *
+</code>
+</pre>
+
+	<p>
+		...extend and improve it to your requirements.
+	</p>
+
+	<hr />
+
+</div>

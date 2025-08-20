@@ -1,0 +1,49 @@
+services:
+  ratts-webapp:
+    image: gameinstance.com/ratts
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: ratts-webapp
+    restart: unless-stopped
+    hostname: ratts-webapp
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@ratts-db/${POSTGRES_DB}"
+    depends_on:
+      - ratts-db
+
+  ratts-db:
+    image: postgres:16.0
+    container_name: ratts-db
+    restart: unless-stopped
+    hostname: ratts-db
+    env_file:
+      - .env
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./backend/migration:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+    # command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
+
+  ratts-smtp:
+    image: dockage/mailcatcher:0.9.0
+    container_name: ratts-smtp
+    restart: unless-stopped
+    hostname: ratts-smtp
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - backend
+    depends_on:
+      - ratts-webapp
+
+networks:
+  backend:

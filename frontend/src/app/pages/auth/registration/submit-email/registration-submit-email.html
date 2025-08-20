@@ -1,0 +1,34 @@
+<h2>Account registration</h2>
+
+<div [ngSwitch]="this.formState">
+
+	<div *ngSwitchCase="FormState.Empty">
+		<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+			<div class="form-group">
+				<label>
+					Email:
+					<input type="email" formControlName="email">
+				</label>
+				<div *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+					<small>Valid email is required.</small>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<button type="submit" [disabled]="form.invalid">Register</button>
+			</div>
+
+		</form>
+	</div>
+
+	<div *ngSwitchCase="FormState.Submitted">
+		An email will be sent to your address.
+		Please follow the sent instructions to complete your account registration.
+	</div>
+
+	<div *ngSwitchCase="FormState.Failed" class="error">
+			Registration could not be completed.
+	</div>
+
+</div>

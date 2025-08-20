@@ -1,0 +1,87 @@
+/* CSS variables */
+:root {
+	--strong-color: #004c4c;
+	--medium-color: #006565;
+	--soft-color: #b2d8d8;
+	--neutral-color: #f9f9f9;
+	--accent-color: #f75e4f;
+	--strong-text-color: #333333;
+	--soft-text-color: #b9b9b9;
+}
+
+/* Global reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html, body {
+	font-family: Roboto, Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+	color: var(--strong-text-color);
+	background: var(--neutral-color);
+	min-height: 100%;
+}
+
+button {
+	background-color: var(--medium-color);
+	color: var(--neutral-color);
+	font-size: 1.1rem;
+}
+
+button:disabled {
+	background-color: var(--soft-color);
+	color: var(--neutral-color);
+}
+
+/* Authentication */
+.auth-container {
+	width: 32rem;
+	margin: auto;
+	padding: 2rem;
+	border: 1px solid #d3d3d3;
+	border-radius: 0.4rem;
+	box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.auth-container .form-group {
+	margin-bottom: 1.2rem;
+}
+
+.auth-container .form-group label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.auth-container .form-group input {
+	width: 100%;
+	padding: 0.8rem;
+	box-sizing: border-box;
+}
+
+.auth-container .form-group button {
+	width: 100%;
+	padding: 1rem;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.auth-container .form-group small {
+	display: block;
+}
+
+.auth-container .error {
+	font-weight: bold;
+	color: var(--accent-color);
+}
+
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+	.auth-container {
+		width: 100%;
+	}
+}

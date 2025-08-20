@@ -1,0 +1,9 @@
+<div class="main-content">
+	<div *ngIf="this.profile">
+		<h2>User Profile</h2>
+		<div>
+			Email: <span>{{this.profile.email}}</span>
+		</div>
+	</div>
+	<small *ngIf="this.hasError">Failed to fetch profile information.</small>
+</div>

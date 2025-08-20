@@ -1,0 +1,18 @@
+# Rust
+/target
+**/*.rs.bk
+
+# IDEs/editors
+/*.swp
+
+# Env files
+.env
+
+# Binaries
+backend
+
+# Logs
+*.log
+
+# SQLx offline cache
+sqlx-data.json

@@ -1,0 +1,81 @@
+/* Layout container */
+.container {
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 1rem;
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	background-color: var(--strong-color);
+}
+
+.navbar .logo img {
+	height: 100px;
+}
+
+.menu-container {
+	position: relative;
+}
+
+.menu-icon {
+	font-size: 30px;
+	cursor: pointer;
+	color: white; /* White color for the icon */
+	display: none; /* Hidden by default */
+}
+
+.menu-list {
+	display: flex;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	background-color: var(--strong-color);
+}
+
+.menu-list li {
+	margin: 0 15px;
+}
+
+.menu-list li a {
+	text-decoration: none;
+	color: white; /* White color for links */
+}
+
+.menu-list li a:hover {
+	text-decoration: underline; /* Underline on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+	.navbar .logo img {
+		height: 60px;
+	}
+
+	.menu-list {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		top: 2rem;
+		right: 0;
+		background-color: var(--medium-color);
+		width: 10rem; /*100%;*/
+		border-radius: 0.5rem;
+	}
+
+	.menu-list li {
+		margin: 0.4rem 1rem;
+	}
+
+	.menu-icon {
+		display: block; /* Show hamburger icon */
+	}
+
+	.menu-list.show {
+		display: flex; /* Show menu when toggled */
+	}
+}

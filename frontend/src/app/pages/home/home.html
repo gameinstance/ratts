@@ -1,0 +1,63 @@
+<div class="main-content">
+	<h1 id="ratts">RATTS</h1>
+	<br />
+	<hr />
+	<p align="center">
+		made with <u>R</u>ust, <u>A</u>xum and <u>T</u>okio, supporting any <u>T</u>ype<u>S</u>cript UI
+	</p>
+	<hr />
+	<br />
+	<p style="text-align: justify">
+		<code>RATTS</code> is a DevOps ready, starter web application
+		featuring <u>stateless JWT authentication</u> and <u>deferred
+		persistence user registration</u>, written in
+		<a href="https://www.rust-lang.org/"><code>Rust</code></a>
+		with <a href="https://github.com/tokio-rs/axum"><code>axum</code></a>,
+		<a href="https://github.com/tokio-rs/tokio"><code>tokio</code></a>,
+		<a href="https://github.com/launchbadge/sqlx/"><code>SQLx</code></a>,
+		<a href="https://docs.rs/argon2/latest/argon2/"><code>argon2</code></a>,
+		and <a href="https://github.com/lettre/lettre"><code>lettre</code></a>.
+		It contains an <a href="https://angular.io/"><code>Angular</code></a>
+		frontend with the typical public/private split found in most modern web
+		apps. It uses <a href="https://www.postgresql.org/"><code>PostgreSQL</code></a>
+		with one <code>user</code> table and migration support.
+	</p>
+
+	<p>Deploy it locally with <a href="https://www.docker.com/"><code>Docker</code></a>:</p>
+
+<pre>
+<code>
+git clone https://github.com/gameinstance/ratts.git
+cd ratts
+cp -v .env.template .env
+docker-compose up --build
+</code>
+</pre>
+
+	<p>
+		and test it on <a 	href="http://localhost:3000">http://localhost:3000</a>,
+		<em>verifying</em> email expedition with mailcatcher at
+		<a href="http://localhost:1080">http://localhost:1080</a>.
+	</p>
+	<br />
+	<p>
+		<a href="https://www.rust-lang.org/">
+			<img src="https://img.shields.io/badge/Rust-1.80+-orange?logo=rust" alt="Rust" />
+		</a>
+		<a href="https://angular.io/">
+			<img src="https://img.shields.io/badge/Angular-18-red?logo=angular" alt="Angular" />
+		</a>
+		<a href="https://www.typescriptlang.org/">
+			<img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&amp;logoColor=fff" alt="TypeScript" />
+		</a>
+		<a href="https://www.postgresql.org/">
+			<img src="https://img.shields.io/badge/Postgres-15-blue?logo=postgresql" alt="Postgres" />
+		</a>
+		<a href="https://www.docker.com/">
+			<img src="https://img.shields.io/badge/Docker-✓-2496ED?logo=docker" alt="Docker" />
+		</a>
+		<a href="https://mit-license.org/">
+			<img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT" />
+		</a>
+	</p>
+</div>

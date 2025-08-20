@@ -1,0 +1,12 @@
+ol, ul {
+	display: block;
+	list-style-type: disc;
+	margin-block-start: 0em;
+	margin-block-end: 1em;
+	padding-inline-start: 2rem;
+}
+
+p {
+	margin: 1rem 0;
+	text-align: justify;
+}

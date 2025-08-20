@@ -1,0 +1,52 @@
+<h2>Account verification</h2>
+
+<div [ngSwitch]="this.formState">
+
+	<div *ngSwitchCase="FormState.Idle">
+		Verifying ...
+	</div>
+
+	<div *ngSwitchCase="FormState.VerifiedToken">
+		<h3>Secure your account with a strong password.</h3>
+		<form [formGroup]="form" (ngSubmit)="onSubmit()">
+			<div class="form-group">
+				<label>
+					Password:
+					<input type="password" formControlName="password">
+				</label>
+
+				<div *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+					<small *ngIf="form.get('password')?.errors?.['required']">Password must be set.</small>
+					<small *ngIf="form.get('password')?.errors?.['minlength']">Password must have minimum {{this.passwordMinLength}} characters.</small>
+					<small *ngIf="form.get('password')?.errors?.['passwordStrength']">Password must include letters and numbers.</small>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label>
+					Confirm Password:
+					<input type="password" formControlName="confirmPassword">
+				</label>
+				<div *ngIf="form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid">
+					<small *ngIf="form.get('confirmPassword')?.errors?.['required']">Please confirm your password.</small>
+				</div>
+				<small *ngIf="form.get('confirmPassword')?.touched && form.hasError('passwordsDoNotMatch')">
+					Passwords do not match.
+        </small>
+			</div>
+
+			<div class="form-group">
+				<button type="submit" [disabled]="form.invalid">Save</button>
+			</div>
+		</form>
+	</div>
+
+	<div *ngSwitchCase="FormState.SubmittedPassword">
+			The registration process is complete. You can now <a href="/login">sign in</a> with your e-mail and password.
+	</div>
+
+	<div *ngSwitchCase="FormState.Failed" class="error">
+			The registration could not be performed.
+	</div>
+
+</div>
