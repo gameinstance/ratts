@@ -80,6 +80,15 @@ sed -i 's/RATTS/YourAwesomeProject/g' *
 - **DevOps ready**
   - Docker compose for build and deployment
 
+
+## Changelog
+
+#### [1.0.0] - 2025/08/20
+- Initial release with core features.
+
+#### [1.1.0] - 2025/09/24
+- Replaced JWT with JWE for improved token security/privacy.
+
 ---
 
 ## License
