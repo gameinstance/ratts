@@ -1,2 +1,2 @@
-pub mod jwt;
+pub mod jwe;
 pub mod password;

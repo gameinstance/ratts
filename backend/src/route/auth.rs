@@ -5,12 +5,11 @@ use axum::{
 };
 use validator::validate_email;
 use crate::{
-	auth::jwt::{create_email_jwt, create_user_jwt, verify_email_jwt},
 	auth::password::{hash_password, verify_password},
 	comms::{email, email_template},
 	db::user::{get_private_by_email, create},
 	error::{AppError, AppResult},
-	model::user::UserStatus,
+	model::user::{UserStatus, AuthenticationClaims, RegistrationClaims},
 	protocol::auth::{
 		EmailRegistrationRequest, PasswordRegistrationRequest, LoginRequest,
 		RegistrationResponse, AuthResponse
@@ -35,7 +34,7 @@ async fn submit_email_handler(
 		return Err(AppError::Validation("Invalid email format".to_string()));
 	}
 
-	let token = create_email_jwt(&payload.email, &state.config.auth)?;
+	let token = crate::auth::jwe::encode(RegistrationClaims{email: payload.email.clone()}, &state.config.jwe)?;
 
 	let (subject, body) = email_template::registration_verification_email_body(
 													&payload.email, &state.config.server_url, &token);
@@ -53,11 +52,11 @@ async fn verify_email_handler(
 	Path(token): Path<String>,
 	State(state): State<AppState>,
 ) -> AppResult<Json<AuthResponse>> {
-	let claims = verify_email_jwt(&token, &state.config.auth)?;
+	let claims: RegistrationClaims = crate::auth::jwe::decode(&token, &state.config.jwe)?;
 
 	println!("verify_email: email={}", &claims.email);
 
-	Ok(Json(AuthResponse { token, valid: state.config.auth.token_validity }))
+	Ok(Json(AuthResponse { token, valid: state.config.jwe.token_validity }))
 }
 
 #[debug_handler]
@@ -65,7 +64,7 @@ async fn register_handler(
 	State(state): State<AppState>,
 	Json(payload): Json<PasswordRegistrationRequest>,
 ) -> AppResult<Json<AuthResponse>> {
-	let claims = verify_email_jwt(&payload.token, &state.config.auth)?;
+	let claims: RegistrationClaims = crate::auth::jwe::decode(&payload.token, &state.config.jwe)?;
 	if !validate_email(&claims.email) {
 		println!("register: invalid email format; email={}", &claims.email);
 
@@ -76,7 +75,7 @@ async fn register_handler(
 		email: claims.email.clone(),
 		password_hash: hash_password(&payload.password),
 	};
-	let user = create(&state.db, new_user)
+	let _user = create(&state.db, new_user)
 		.await
 		.map_err(|_| AppError::Internal("Please try again later".to_string()))?;
 
@@ -86,11 +85,9 @@ async fn register_handler(
 		.await
 		.map_err(|_| AppError::Internal("Please try again later".to_string()))?;
 
-	let token = create_user_jwt(user.id, &state.config.auth)?;
-
 	println!("register: created user {}", &claims.email);
 
-	Ok(Json(AuthResponse { token, valid: state.config.auth.token_validity }))
+	Ok(Json(AuthResponse { token: "".to_string(), valid: state.config.jwe.token_validity }))
 }
 
 #[debug_handler]
@@ -117,9 +114,9 @@ async fn login_handler(
 		return Err(AppError::InvalidCredentials);
 	}
 
-	let token = create_user_jwt(user.id, &state.config.auth)?;
+	let token = crate::auth::jwe::encode(AuthenticationClaims{uid: user.id}, &state.config.jwe)?;
 
 	println!("login: generated token for {}", &payload.email);
 
-	Ok(Json(AuthResponse { token, valid: state.config.auth.token_validity}))
+	Ok(Json(AuthResponse { token, valid: state.config.jwe.token_validity}))
 }

@@ -1,7 +1,6 @@
 use axum::extract::State;
 use axum::{body::Body, http::Request, middleware::Next, response::Response};
 use crate::{
-	auth::jwt::verify_user_jwt,
 	error::{AppError, AppResult},
 	model::user::UserSession,
 	state::AppState,
@@ -25,10 +24,10 @@ pub async fn require_auth(
 
 	//  Authorization header w/ "Bearer " prefix
 	let token = &auth_header[7..];
-	let claims = verify_user_jwt(token, &state.config.auth)?;
+	let claims: crate::model::user::AuthenticationClaims = crate::auth::jwe::decode(token, &state.config.jwe)?;
 
 	let session = UserSession {
-		user_id: claims.sub as i64,
+		user_id: claims.uid as i64,
 	};
 
 	request.extensions_mut().insert(session);

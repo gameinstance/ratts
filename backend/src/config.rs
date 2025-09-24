@@ -8,14 +8,8 @@ pub struct SmtpConfig {
 }
 
 #[derive(Debug, Clone)]
-pub struct AuthConfig {
-	pub jwt_secret: String,
-	pub token_validity: u32,
-}
-
-#[derive(Debug, Clone)]
 pub struct AppConfig {
-	pub auth: AuthConfig,
+	pub jwe: crate::auth::jwe::Config,
 	pub database_url: String,
 	pub listen_addr: SocketAddr,
 	pub server_url: String,
@@ -24,11 +18,12 @@ pub struct AppConfig {
 }
 
 pub fn load_config() -> Result<AppConfig, Box<dyn std::error::Error>> {
-	let auth = { AuthConfig {
-		jwt_secret: std::env::var("JWT_SECRET").expect("JWT_SECRET must be set"),
-		token_validity: std::env::var("TOKEN_VALIDITY").unwrap_or_else(|_| "600".to_string())
+	let jwe = crate::auth::jwe::Config::new(
+		&std::env::var("JWT_SIGNATURE_KEY").expect("JWT_SIGNATURE_KEY must be set"),
+		&std::env::var("JWE_ENCRYPTION_KEY").expect("JWE_ENCRYPTION_KEY must be set"),
+		std::env::var("TOKEN_VALIDITY").unwrap_or_else(|_| "600".to_string())
 											.parse().expect("Failed to parse TOKEN_VALIDITY"),
-	}};
+	);
 	let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
 	let listen_addr = std::env::var("LISTEN_ADDRESS").unwrap_or_else(|_| "0.0.0.0:3000".to_string());
@@ -48,7 +43,7 @@ pub fn load_config() -> Result<AppConfig, Box<dyn std::error::Error>> {
 	println!("Configuration loaded");
 
 	Ok(AppConfig {
-		auth,
+		jwe,
 		database_url,
 		listen_addr,
 		server_url,

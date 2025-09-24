@@ -17,8 +17,8 @@ pub enum AppError {
 	#[error("Unauthorized")]
 	Unauthorized,
 
-	#[error("JWT error")]
-	JwtError(#[from] jsonwebtoken::errors::Error),
+	#[error("JWE error")]
+	JweError(#[from] biscuit::errors::Error),
 
 	#[error("Validation error: {0}")]
 	Validation(String),
@@ -40,7 +40,7 @@ impl IntoResponse for AppError {
 			},
 			AppError::InvalidCredentials => self.generic_error_response(),
 			AppError::Unauthorized => self.generic_error_response(),
-			AppError::JwtError(_) => self.generic_error_response(),
+			AppError::JweError(_) => self.generic_error_response(),
 			AppError::Validation(_) => self.generic_error_response(),
 			AppError::NotFound => self.generic_error_response(),
 			AppError::Internal(msg) => {

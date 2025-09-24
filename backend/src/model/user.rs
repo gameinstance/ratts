@@ -1,5 +1,5 @@
 use chrono::{DateTime, Utc};
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
 use sqlx::FromRow;
 
 #[derive(Debug, PartialEq, sqlx::Type, Serialize)]
@@ -38,4 +38,14 @@ pub struct UserSession {
 pub struct NewUser {
 	pub email: String,
 	pub password_hash: String,
+}
+
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+pub struct AuthenticationClaims {
+	pub uid: i64,
+}
+
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+pub struct RegistrationClaims {
+	pub email: String,
 }
