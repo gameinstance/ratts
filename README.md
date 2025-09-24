@@ -1,6 +1,6 @@
 # RATTS
 
-`RATTS` is a DevOps ready, starter web application featuring <u>stateless JWT authentication</u> and
+`RATTS` is a DevOps ready, starter web application featuring <u>stateless JWT/JWE authentication</u> and
 <u>deferred persistence user registration</u>, written in [`Rust`] with [`axum`], [`tokio`], [`SQLx`], [`argon2`], and
 [`lettre`].
 It features an [`Angular`] frontend with a clear public/private split, mirroring the structure of modern web applications.
@@ -65,7 +65,7 @@ sed -i 's/RATTS/YourAwesomeProject/g' *
 ## Features
 
 - **Authentication**
-  - JWT-based login
+  - JWT/JWE-based login
   - Argon2id password hashing
   - Short-lived access tokens
 - **Registration flow**
