@@ -1,5 +1,5 @@
 use base64::{Engine as _, engine::general_purpose};
-use biscuit::{ClaimsSet, RegisteredClaims, Empty, JWT, JWE};
+use biscuit::{ClaimsSet, RegisteredClaims, Empty, JWT, JWE, ValidationOptions};
 use biscuit::jwk::JWK;
 use biscuit::jws::{self, Secret};
 use biscuit::jwe;
@@ -113,6 +113,9 @@ pub fn decode<
 		&Secret::Bytes(config.jwt_signature_key.clone()),
 		SignatureAlgorithm::HS256
 	)?;
+
+	let validation_options = ValidationOptions::default();
+	verified_jwt.validate(validation_options)?;
 
 	let jwt_payload = verified_jwt.payload()?;
 
