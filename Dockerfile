@@ -28,9 +28,11 @@ RUN cargo test --release && \
 FROM node:20 AS frontend-builder
 
 WORKDIR /app/frontend
-COPY frontend/ ./
 
+COPY frontend/package.json ./
 RUN npm install
+
+COPY frontend/ ./
 
 RUN mkdir -p ./src/protocol
 COPY --from=backend-builder /app/backend/bindings ./src/protocol
