@@ -87,11 +87,11 @@ sed -i 's/RATTS/YourAwesomeProject/g' *
 - **New functionality**
   - Added support for return-url on login
 
-- **Breaking frontent changes**
-  - frontend directory structure re-organization to improve feature development
-  - split the monolithic app into lazy loaded chunks
-  - added interceptor-based header patching on authenticated requests
-  - corrected the use of observers for authentication service requests
+- **Breaking frontend changes**
+  - Re-organized frontend directory structure to improve feature development
+  - Split the monolithic app into lazy loaded chunks
+  - Added interceptor-based header patching on authenticated requests
+  - Corrected the use of observers for authentication service requests
 
 #### [1.1.0] - 2025/09/24
 - Replaced JWT with JWE for improved token security/privacy.
