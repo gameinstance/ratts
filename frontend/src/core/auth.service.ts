@@ -39,36 +39,15 @@ export class AuthService {
 		this.tokenService.remove();
 	}
 
-	public register_email(req: EmailRegistrationRequest, observer: Observer<RegistrationResponse>) {
-		this.http.post<RegistrationResponse>('/api/submit_email', req).subscribe({
-			next: (res: RegistrationResponse) => {
-				observer.next(res);
-			},
-			error: (err: any) => {
-				observer.error(err);
-			}
-		});
+	public register_email(req: EmailRegistrationRequest): Observable<RegistrationResponse> {
+		return this.http.post<RegistrationResponse>('/api/submit_email', req);
 	}
 
-	public verify_token(token: string, observer: Observer<AuthResponse>) {
-		this.http.get<AuthResponse>('/api/verify_email/' + token).subscribe({
-			next: (res: AuthResponse) => {
-				observer.next(res);
-			},
-			error: (err: any) => {
-				observer.error(err);
-			}
-		});
+	public verify_token(token: string): Observable<AuthResponse> {
+		return this.http.get<AuthResponse>('/api/verify_email/' + token);
 	}
 
-	public register_password(req: PasswordRegistrationRequest, observer: Observer<AuthResponse>) {
-		this.http.post<AuthResponse>('/api/register', req).subscribe({
-			next: (res: AuthResponse) => {
-				observer.next(res);
-			},
-			error: (err: any) => {
-				observer.error(err);
-			}
-		});
+	public register_password(req: PasswordRegistrationRequest): Observable<AuthResponse> {
+		return this.http.post<AuthResponse>('/api/register', req);
 	}
 }

@@ -51,7 +51,7 @@ export class RegistrationVerifyEmail implements OnInit {
 			return;
 		}
 
-		this.authService.verify_token(this.token, {
+		this.authService.verify_token(this.token).subscribe({
 				next: () => {this.formState = FormState.VerifiedToken;},
 				error: () => {this.formState = FormState.Failed;},
 				complete: () => {}
@@ -63,8 +63,7 @@ export class RegistrationVerifyEmail implements OnInit {
 			this.authService.register_password({
 					password: this.form.value.password,
 					token: this.token
-			},
-			{
+			}).subscribe({
 				next: () => {this.formState = FormState.SubmittedPassword;},
 				error: () => {this.formState = FormState.Failed;},
 				complete: () => {}

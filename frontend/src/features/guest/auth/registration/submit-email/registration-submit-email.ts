@@ -33,7 +33,7 @@ export class RegistrationSubmitEmail {
 
 	onSubmit() {
 		if (this.form.valid) {
-			this.authService.register_email(this.form.value, {
+			this.authService.register_email(this.form.value).subscribe({
 				next: () => {this.formState = FormState.Submitted;},
 				error: () => {this.formState = FormState.Failed;},
 				complete: () => {}
