@@ -1,45 +1,42 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CanActivateFn, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { Observable, of, Observer } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TokenService } from '@core/token.service';
 import { LoginRequest } from '@protocol/LoginRequest';
 import { EmailRegistrationRequest } from '@protocol/EmailRegistrationRequest';
 import { PasswordRegistrationRequest } from '@protocol/PasswordRegistrationRequest';
 import { RegistrationResponse } from '@protocol/RegistrationResponse';
 import { AuthResponse } from '@protocol/AuthResponse';
-import { Observer } from 'rxjs';
-
-const authTokenName = 'auth-token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 	private http = inject(HttpClient);
 	private router = inject(Router);
+	private tokenService = inject(TokenService);
 
 	public isLoggedIn(): boolean {
-		return this.getToken()?
-				true : false;
+		return !!this.tokenService.get();
+	}
+	public hasValidToken(): Observable<boolean> {
+		// async, one day
+		const token = this.tokenService.get();
+		const valid = !!token;
+		// tokenService already checked expiration
+		return of(valid);
 	}
 
-	public login(req: LoginRequest, observer: Observer<AuthResponse>) {
-		this.http.post<AuthResponse>('/api/login', req).subscribe({
-			next: (res: AuthResponse) => {
-				localStorage.setItem(authTokenName, JSON.stringify({
-					token: res.token,
-					expires: Date.now() + res.valid * 1000
-				}));
-
-				this.router.navigate(['/user']);
-			},
-			error: (err: any) => {
-				observer.error(err);
-			}
-		});
+	public login(req: LoginRequest): Observable<AuthResponse> {
+		return this.http.post<AuthResponse>('/api/login', req).pipe(
+			tap(res => {
+				this.tokenService.set(res.token, res.valid);
+			})
+		);
 	}
 
 	public logout() {
-		localStorage.removeItem(authTokenName);
-
-		this.router.navigate(['/']);
+		this.tokenService.remove();
 	}
 
 	public register_email(req: EmailRegistrationRequest, observer: Observer<RegistrationResponse>) {
@@ -73,23 +70,5 @@ export class AuthService {
 				observer.error(err);
 			}
 		});
-	}
-
-	public getToken(): string | null {
-		const dataJson = localStorage.getItem(authTokenName);
-		if (!dataJson)
-			return null;
-
-		try {
-			const authData = JSON.parse(dataJson);
-			if (!authData.token
-					|| !authData.expires
-					|| (Date.now() > authData.expires))
-				return null;
-
-			return authData.token;
-		} catch (error) {
-			return null;
-		}
 	}
 }

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { canActivateUser } from '@core/user.guard';
+import { AuthGuard } from '@core/auth.guard';
 import { NotFound } from './not-found/not-found';
 
 export const routes: Routes = [
@@ -10,8 +10,8 @@ export const routes: Routes = [
 	{
 		path: 'user',
 		loadChildren: () => import('@features/user/user.routes').then(m => m.userRoutes),
-		canLoad: [ canActivateUser ],
-		canActivate: [ canActivateUser ],
+		canLoad: [ AuthGuard ],
+		canActivate: [ AuthGuard ],
 		runGuardsAndResolvers: 'always'
 	},
 	{
