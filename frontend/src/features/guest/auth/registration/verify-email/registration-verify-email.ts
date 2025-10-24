@@ -2,8 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '@services/auth.service';
-import { passwordValidator, passwordMatchValidator } from '@pages/auth/validators';
+import { AuthService } from '@core/auth.service';
+import { passwordValidator, passwordMatchValidator } from '@shared/validators';
 
 
 enum FormState {

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ProfileResponse } from '@protocol/ProfileResponse';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@core/auth.service';
 import { Observer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

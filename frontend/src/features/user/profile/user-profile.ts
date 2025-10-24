@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileResponse } from '@protocol/ProfileResponse';
-import { UserService } from '@services/user.service';
+import { UserService } from '@features/user/user.service';
 
 @Component({
 	selector: 'app-user-profile',

@@ -1,16 +1,16 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
-import { AuthLayout } from '@layouts/auth-layout/auth-layout';
-import { UserLayout } from '@layouts/user-layout/user-layout';
-import { Home } from '@pages/home/home';
-import { About } from '@pages/about/about';
-import { Login } from '@pages/auth/login/login';
-import { RegistrationSubmitEmail } from '@pages/auth/registration/submit-email/registration-submit-email';
-import { RegistrationVerifyEmail } from '@pages/auth/registration/verify-email/registration-verify-email';
-import { UserDashboard } from '@pages/user/dashboard/user-dashboard';
-import { UserProfile } from '@pages/user/profile/user-profile';
-import { NotFound } from '@pages/not-found/not-found';
-import { canActivateUser } from '@guards/user.guard';
+import { AuthLayout } from '@features/guest/auth/auth-layout/auth-layout';
+import { UserLayout } from '@features/user/user-layout/user-layout';
+import { Home } from '@features/guest/home/home';
+import { About } from '@features/guest/about/about';
+import { Login } from '@features/guest/auth/login/login';
+import { RegistrationSubmitEmail } from '@features/guest/auth/registration/submit-email/registration-submit-email';
+import { RegistrationVerifyEmail } from '@features/guest/auth/registration/verify-email/registration-verify-email';
+import { UserDashboard } from '@features/user/dashboard/user-dashboard';
+import { UserProfile } from '@features/user/profile/user-profile';
+import { canActivateUser } from '@core/user.guard';
+import { NotFound } from './not-found/not-found';
 
 export const routes: Routes = [
 	{
