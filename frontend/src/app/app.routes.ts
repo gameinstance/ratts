@@ -1,4 +1,3 @@
-import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { AuthLayout } from '@features/guest/auth/auth-layout/auth-layout';
 import { UserLayout } from '@features/user/user-layout/user-layout';
