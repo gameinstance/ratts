@@ -83,11 +83,22 @@ sed -i 's/RATTS/YourAwesomeProject/g' *
 
 ## Changelog
 
-#### [1.0.0] - 2025/08/20
-- Initial release with core features.
+#### [1.2.0] - 2025/10/24
+- **New functionality**
+  - Added support for return-url on login
+
+- **Breaking frontent changes**
+  - frontend directory structure re-organization to improve feature development
+  - split the monolithic app into lazy loaded chunks
+  - added interceptor-based header patching on authenticated requests
+  - corrected the use of observers for authentication service requests
 
 #### [1.1.0] - 2025/09/24
 - Replaced JWT with JWE for improved token security/privacy.
+
+#### [1.0.0] - 2025/08/20
+- Initial release with core features.
+
 
 ---
 
