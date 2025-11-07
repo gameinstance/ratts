@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProfileResponse } from '@protocol/ProfileResponse';
 import { UserService } from '@features/user/user.service';
 
@@ -10,13 +11,15 @@ import { UserService } from '@features/user/user.service';
 	styleUrl: './user-profile.css'
 })
 export class UserProfile implements OnInit {
+	private userService = inject(UserService);
+
+	readonly profile$ = this.userService.profile().pipe(takeUntilDestroyed());
+
 	profile?: ProfileResponse;
 	hasError: boolean = false;
 
-	private userService = inject(UserService);
-
 	ngOnInit() {
-		this.userService.profile({
+		this.profile$.subscribe({
 			next: (res) => {this.profile = res;},
 			error: () => {this.hasError = true;},
 			complete: () => {}
