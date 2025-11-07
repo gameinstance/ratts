@@ -83,15 +83,18 @@ sed -i 's/RATTS/YourAwesomeProject/g' *
 
 ## Changelog
 
+#### [1.2.1] - 2025/11/07
+- Corrected Angular memory-leaks caused by unsubscribed observer subscriptions.
+
 #### [1.2.0] - 2025/10/24
 - **New functionality**
-  - Added support for return-url on login
+  - Added support for return-url on login.
 
 - **Breaking frontend changes**
-  - Re-organized frontend directory structure to improve feature development
-  - Split the monolithic app into lazy loaded chunks
-  - Added interceptor-based header patching on authenticated requests
-  - Corrected the use of observers for authentication service requests
+  - Re-organized frontend directory structure to improve feature development.
+  - Split the monolithic app into lazy loaded chunks.
+  - Added interceptor-based header patching on authenticated requests.
+  - Corrected the use of observers for authentication service requests.
 
 #### [1.1.0] - 2025/09/24
 - Replaced JWT with JWE for improved token security/privacy.
