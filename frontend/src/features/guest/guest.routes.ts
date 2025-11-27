@@ -10,7 +10,7 @@ export const guestRoutes: Routes = [
 	{
 		path: '',
 		children: [
-			{ path: '', component: Home },
+			{ path: '', component: Home, pathMatch: 'full' },
 			{ path: 'about', component: About },
 		]
 	},
