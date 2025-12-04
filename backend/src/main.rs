@@ -35,7 +35,7 @@ async fn main() {
 	let app_state = state::AppState {
 		config: config.clone(),
 		db: db_pool,
-		dummy_hash: auth::password::hash_password("ratts")
+		dummy_hash: auth::password::hash_password(&auth::password::generate_random_string(16))
 	};
 	let router = route::routes(app_state.clone()).with_state(app_state);
 

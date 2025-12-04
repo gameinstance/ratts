@@ -6,6 +6,10 @@ use argon2::{
 		rand_core::OsRng
 	},
 };
+use rand::{
+	distributions::Alphanumeric,
+	Rng
+};
 
 fn argon2_instance() -> Argon2<'static> {
 	Argon2::default()
@@ -25,4 +29,12 @@ pub fn verify_password(password: &str, hash_phc: &str) -> bool {
 		Some(ph) => Argon2::default().verify_password(password.as_bytes(), &ph).is_ok(),
 		None => false,
 	}
+}
+
+pub fn generate_random_string(len: usize) -> String {
+	rand::thread_rng()
+	.sample_iter(&Alphanumeric)
+	.take(len)
+	.map(char::from)
+	.collect()
 }
