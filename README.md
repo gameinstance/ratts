@@ -83,6 +83,10 @@ sed -i 's/RATTS/YourAwesomeProject/g' *
 
 ## Changelog
 
+#### [1.2.2] - 2025/12/04
+- Reduced Angular component boilerplate by wrapping Observable into Promise on simple requests.
+- Replaced the predefined dummy password with a randomly generated one; minor security improvement.
+
 #### [1.2.1] - 2025/11/07
 - Corrected Angular memory-leaks caused by unsubscribed observer subscriptions.
 
