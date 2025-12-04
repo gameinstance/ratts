@@ -1,9 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, switchMap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@core/auth.service';
 import { passwordValidator, passwordMatchValidator } from '@shared/validators';
 import { PasswordRegistrationRequest } from '@protocol/PasswordRegistrationRequest';
@@ -39,48 +38,40 @@ export class RegistrationVerifyEmail implements OnInit {
 		validators: passwordMatchValidator()
 	});
 
-	private verifyTrigger$ = new Subject<string>();
-	private verify$ = this.verifyTrigger$.pipe(
-		switchMap(request => this.authService.verify_token(request)),
-		takeUntilDestroyed()
-	);
-	private registerTrigger$ = new Subject<PasswordRegistrationRequest>();
-	private register$ = this.registerTrigger$.pipe(
-		switchMap(request => this.authService.register_password(request)),
-		takeUntilDestroyed()
-	);
-
-	ngOnInit() {
+	async ngOnInit() {
 		this.token = this.route.snapshot.paramMap.get('token') || '';
-		this.formState = FormState.Idle;
-
 		if (this.token == '') {
 			this.formState = FormState.Failed;
 
 			return;
 		}
+		this.formState = FormState.Idle;
 
-		this.verify$.subscribe({
-			next: () => {this.formState = FormState.VerifiedToken;},
-			error: () => {this.formState = FormState.Failed;},
-			complete: () => {}
-		});
-		this.register$.subscribe({
-			next: () => {this.formState = FormState.SubmittedPassword;},
-			error: () => {this.formState = FormState.Failed;},
-			complete: () => {}
-		});
-		this.verifyTrigger$.next(this.token as string);
+		try {
+			await firstValueFrom(this.authService.verify_token(this.token as string));
+			this.formState = FormState.VerifiedToken;
+		} catch (err) {
+			// check err.message for details
+			this.formState = FormState.Failed;
+		}
 	}
 
-	onSubmit() {
-		if (this.form.valid) {
-			this.registerTrigger$.next({
+	async onSubmit() {
+		if (!this.form.valid) {
+			this.form.markAllAsTouched();
+
+			return;
+		}
+
+		try {
+			await firstValueFrom(this.authService.register_password({
 				password: this.form.value.password,
 				token: this.token
-			} as PasswordRegistrationRequest);
-		} else {
-			this.form.markAllAsTouched();
+			} as PasswordRegistrationRequest));
+			this.formState = FormState.SubmittedPassword;
+		} catch (err) {
+			// check err.message for details
+			this.formState = FormState.Failed;
 		}
 	}
 }

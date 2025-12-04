@@ -1,8 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subject, switchMap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@core/auth.service';
 import { EmailRegistrationRequest } from '@protocol/EmailRegistrationRequest';
 
@@ -18,7 +17,7 @@ enum FormState {
 	templateUrl: './registration-submit-email.html',
 	styleUrl: './registration-submit-email.css'
 })
-export class RegistrationSubmitEmail implements OnInit {
+export class RegistrationSubmitEmail {
 	FormState = FormState;
 
 	private formBuilder = inject(FormBuilder);
@@ -29,25 +28,19 @@ export class RegistrationSubmitEmail implements OnInit {
 		email: ['', [Validators.required, Validators.email]]
 	});
 
-	private requestTrigger$ = new Subject<EmailRegistrationRequest>();
-	private request$ = this.requestTrigger$.pipe(
-		switchMap(request => this.authService.register_email(request)),
-		takeUntilDestroyed()
-	);
-
-	ngOnInit() {
-		this.request$.subscribe({
-			next: () => {this.formState = FormState.Submitted;},
-			error: () => {this.formState = FormState.Failed;},
-			complete: () => {}
-		});
-	}
-
-	onSubmit() {
-		if (this.form.valid) {
-			this.requestTrigger$.next(this.form.value as EmailRegistrationRequest);
-		} else {
+	async onSubmit() {
+		if (!this.form.valid) {
 			this.form.markAllAsTouched();
+
+			return;
+		}
+
+		try {
+			await firstValueFrom(this.authService.register_email(this.form.value as EmailRegistrationRequest));
+			this.formState = FormState.Submitted;
+		} catch (err) {
+			// check err.message for details
+			this.formState = FormState.Failed;
 		}
 	}
 }
